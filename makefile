@@ -4,21 +4,22 @@
 # 
 # Author: June
 
-CC=g++
+CXX=g++
 OBJ=catalan.o main.o
-FLAGS=-g
+CXXFLAGS=
 
 all: $(OBJ)
-	$(CC) $^ -o catalan.out
+	$(CXX) $(CXXFLAGS) $^ -o catalan.out
 	chmod +x catalan.out
 
+debug: CXXFLAGS=-g
 debug: $(OBJ)
 	echo "debug compile..."
-	$(CC) $(FLAGS) $^ -o catalan.out
+	$(CXX) $(CXXFLAGS) $^ -o catalan.out
 	chmod +x catalan.out
 
 clean :
 	rm *.o *.c catalan.out
 
 %.o: %.cpp
-	$(CC) -c $^ -o $@
+	$(CC) $(CXXFLAGS) -c $^ -o $@
