@@ -9,17 +9,17 @@ OBJ=main.o catalan.o
 CXXFLAGS=
 
 all: $(OBJ)
-	$(CXX) $(CXXFLAGS) $^ -o catalan.out
-	chmod +x catalan.out
+	$(CXX) $(CXXFLAGS) $^ -o catalan
+	chmod +x catalan
 
 debug: CXXFLAGS=-g
 debug: $(OBJ)
 	echo "debug compile..."
-	$(CXX) $(CXXFLAGS) $^ -o catalan.out
-	chmod +x catalan.out
+	$(CXX) $(CXXFLAGS) $^ -o catalan
+	chmod +x catalan
 
 clean :
-	rm *.o *.c catalan.out
+	rm *.o *.c catalan
 
 %.o: %.cpp
-	$(CC) $(CXXFLAGS) -c $^ -o $@
+	$(CXX) $(CXXFLAGS) -c $^ -o $@

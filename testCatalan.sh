@@ -15,7 +15,7 @@ make
 
 # Confirms error data. 
 
-./catalan.out
+./catalan
 if [ $? -eq 2 ];
 then
   echo "Print check: that print is not fwd'd to dev/null"
@@ -23,7 +23,7 @@ then
   TESTINGSCORE=$((TESTINGSCORE + 1))
 fi
 
-./catalan.out 3 4 > /dev/null
+./catalan 3 4 > /dev/null
 if [ $? -eq 2 ];
 then
   echo "Too Long Argument Handling Passed"
@@ -33,7 +33,7 @@ fi
 
 
 
-./catalan.out string > /dev/null
+./catalan string > /dev/null
 if [ $? -eq 3 ];
 then
   echo "Non-Number Argument Handling Passed"
@@ -41,7 +41,7 @@ then
 fi
 
 
-./catalan.out 3.4 > /dev/null
+./catalan 3.4 > /dev/null
 if [ $? -eq 3 ];
 then
   echo "Non-Int Argument Handling Passed"
@@ -49,14 +49,14 @@ then
 fi
 
 
-./catalan.out -4 > /dev/null
+./catalan -4 > /dev/null
 if [ $? -eq 4 ];
 then
   echo "Negative Argument Handling Passed"
   TESTINGSCORE=$((TESTINGSCORE + 1))
 fi
 
-./catalan.out 1000 > /dev/null
+./catalan 1000 > /dev/null
 if [ $? -eq 5 ];
 then
   echo "Max Argument Handling Passed"
@@ -65,28 +65,28 @@ then
 fi
 
 
-if [ $(./catalan.out 0 | tail -n 1) == "1" ];
+if [ $(./catalan 0 | tail -n 1) == "1" ];
 then
   echo "Passed Case for 0"
   
   TESTINGSCORE=$((TESTINGSCORE + 1))
 fi
 
-if [ $(./catalan.out 1 | tail -n 1) == "1" ];
+if [ $(./catalan 1 | tail -n 1) == "1" ];
 then
   echo "Passed Case for 1"
   
   TESTINGSCORE=$((TESTINGSCORE + 1))
 fi
 
-if [ $(./catalan.out 4 | tail -n 1) == "14" ];
+if [ $(./catalan 4 | tail -n 1) == "14" ];
 then
   echo "Passed Case for 4"
   
   TESTINGSCORE=$((TESTINGSCORE + 1))
 fi
 
-if [ $(./catalan.out 10 | tail -n 1) == "16796" ];
+if [ $(./catalan 10 | tail -n 1) == "16796" ];
 then
   echo "Passed Case for 10"
   
