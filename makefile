@@ -5,7 +5,7 @@
 # Author: June
 
 CXX=g++
-OBJ=catalan.o main.o
+OBJ=main.o catalan.o
 CXXFLAGS=
 
 all: $(OBJ)

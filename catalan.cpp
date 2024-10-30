@@ -20,9 +20,9 @@ namespace Catalan {
     } 
   
     int64_t ans = 0;
-    for(int64_t i = 0; i < 1; i++) {
-      ans += catalan(i) * catalan(n - i);
-    }
+    for(int64_t i = 0; i < n; i++) {
+      ans += catalan(i) * catalan( (n - 1) - i);
+    } 
 
     return ans;
   }
