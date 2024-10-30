@@ -12,12 +12,18 @@
 //  Catalan result. After calculating, prints result to cout, and returns
 //  result to cout. Has compile-time adjustable max value under "maximum".
 //
-//  Failure conditions returns: 
+//  Special Return Codes: 
 //    -1    : Potential Memory Corruption
 //    -2, -3: invalid format
 //    -4, -5: out of bounds
-//    
+//    0     : Return val overflow
+//
+// Return Value Overflow: 
+// Function will print the resulting number in a 64-signed bit value. But will
+// Return an int of the result of up to the 32-but signed int limit. An overflow
+// will cause the function to return 0.
 ////
+#include <stdlib.h>
 
 #include <iostream>
 #include <sstream>
@@ -25,82 +31,82 @@
 
 #include "catalan.h"
 
-namespace Catalan {
+constexpr int64_t maximum = 40;   // For easy adjusting.
 
-  constexpr int64_t maximum = 40;   // For easy adjusting.
+void ErrorPrint(int errCode, std::ostream& out);
 
-  ErrorPrint(int errCode, std::ostream& out);
-
-  int64_t main(int argc, char *argv[]) {
+int main(int argc, char *argv[]) {
     
 
     
-    if (argc != 2){
-      ErrorPrint(-2);               // too many/few arguments
-    }
-
-    stringstream argument;
-    argument << argv[1];
-    int64_t number = 0;
-    argument >> number;    
-  
-
-    //Input Sanity Checks
-    if (argument.fail()) {
-      if (argument.bad()) {
-        ErrorPrint(-1, std::cout);  // Potential Mem Corruption
-      }
-      ErrorPrint(-3, std::cout);    // Non-Integer Argument
-    }
-
-    if (number < 0) {
-      ErrorPrint(-4, std::cout);
-    }
-    
-    if (number >= maximum) {
-      ErrorPrint(-5, std::cout);
-    }
-  
-    //Input is now sanitized to supported for catalan()
-    
-    int64_t answer = 0;
-    answer = catalan(number);
-    std::cout << " " << answer << std::endl;
-    return answer;
-    
+  if (argc != 2){
+    ErrorPrint(-2, std::cout);    // too many/few arguments
   }
 
-  //Prints error code to ostream, then exits program via exit.
-  //Returns an error code via exit()
-  void ErrorPrint(int errCode, std::ostream& out){
+  std::stringstream argument;
+  argument << argv[1];
+  int64_t number = 0;
+  argument >> number;    
   
-    out << "Error: ";
 
-    switch (errCode){
-      case -1:
-        out << "stringstream badbit is true! (Is your memory stable?)";
-        break;
-      case -2:
-        out << "invalid format - too many/few arguments";
-        break;
-      case -3:
-        out << "invalid format - argument is not an integer";
-        break;
-      case -4:
-        out << "out of bounds - argument is negative";
-        break;
-      case -5:
-        out << "out of bounds - argument exceeds maximum";
-        break;
-      default:
-        out << "unexpected!! return val is " << errCode << "!";
-        break;
+  //Input Sanity Checks
+  if (argument.fail()) {
+    if (argument.bad()) {
+      ErrorPrint(-1, std::cout);  // Potential Mem Corruption
     }
-    
-    out << "\nusage: catalan <number>\n";
-    out << "  note: number must be a postive integer\n\n";
-    out << "        maximum input: " << maximum << std::endl;
-    exit(errCode);
+    ErrorPrint(-3, std::cout);    // Non-Integer Argument
   }
+
+  if (number < 0) {
+    ErrorPrint(-4, std::cout);
+  }
+    
+  if (number >= maximum) {
+    ErrorPrint(-5, std::cout);
+  }
+  
+  //Input is now sanitized to supported for catalan()
+    
+  int64_t answer = 0;
+  answer = Catalan::catalan(number);
+  std::cout << " " << answer << std::endl;
+
+  if(answer > 2147483647) { return 0; }
+
+  return answer;
+    
+}  
+
+//Prints error code to ostream, then exits program via exit.
+//Returns an error code via exit()
+void ErrorPrint(int errCode, std::ostream& out){
+ 
+  out << "Error: ";
+   switch (errCode){
+    case -1:
+      out << "stringstream badbit is true! (Is your memory stable?)";
+      break;
+    case -2:
+      out << "invalid format - too many/few arguments";
+      break;
+    case -3:
+      out << "invalid format - argument is not an integer";
+      break;
+    case -4:
+      out << "out of bounds - argument is negative";
+      break;
+    case -5:
+      out << "out of bounds - argument exceeds maximum";
+      break;
+    default:
+      out << "unexpected!! return val is " << errCode << "!";
+      break;
+  }
+   
+  out << "\nusage: catalan <number>\n";
+  out << "  note: number must be a postive integer\n\n";
+  out << "        maximum input: " << maximum << std::endl;
+  
+  //There is a problem, program needs to tear it all down as fast as it can.
+  exit(errCode);
 }
-

@@ -17,11 +17,11 @@
 
 namespace Catalan {
 
-  calalan(int64_t n);
+  int64_t catalan(int64_t n);
 
 }
 
 
-#endif CATALAN_H_
+#endif // CATALAN_H_
 
 
